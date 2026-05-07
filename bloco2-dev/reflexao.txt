@@ -10,6 +10,11 @@
 # Dê um exemplo concreto do que você usou nesta atividade.
 
 Resposta:
+No shell moderno, o mecanismo equivalente é o redirecionamento de entrada e saída e o uso de arquivos/dispositivos representados no sistema. Um exemplo usado na atividade foi:
+
+strace echo "ola" 2>&1 | grep write
+
+Nesse comando, o "2>&1" redireciona a saída de erro para a saída padrão, funcionando de forma parecida com a associação de dispositivos feita pelo JCL.
 
 
 # ─────────────────────────────────────────────────────
@@ -22,6 +27,7 @@ Resposta:
 #    que não mudou?
 
 Resposta 1:
+O make utiliza dependências e comparação de datas de modificação dos arquivos. Ele verifica se algum arquivo-fonte foi alterado depois do arquivo compilado e somente recompila quando detecta mudanças necessárias.
 
 
 # 2. O monitor unificava "supervisor, carregador e rotinas de I/O
@@ -29,3 +35,4 @@ Resposta 1:
 #    de desenvolvimento moderno?
 
 Resposta 2:
+O Makefile unifica tarefas do desenvolvimento como compilação, ligação, execução de comandos e organização das dependências do projeto. Ele automatiza várias etapas do processo em uma única interface de comandos.
