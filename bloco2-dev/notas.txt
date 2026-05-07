@@ -6,7 +6,10 @@
 # Quantas linhas tem soma.i? O que o pré-processador expandiu?
 
 Linhas em soma.i:
+aproximadamente 700 linhas
+
 Observação:
+O pré-processador expandiu bibliotecas como stdio.h, macros e diretivas #include do código original.
 
 
 # FASE 2 — Assembly (gcc -S)
@@ -15,28 +18,55 @@ Observação:
 
 Trecho de soma.s:
 
+main:
+	pushq	%rbp
+	movq	%rsp, %rbp
+	movl	$10, %esi
+	leaq	.LC0(%rip), %rax
+	movq	%rax, %rdi
+	call	printf@PLT
+	movl	$0, %eax
+	popq	%rbp
+	ret
+
 Explicação:
+- pushq %rbp: salva a base da pilha.
+- movq %rsp, %rbp: cria um novo quadro de pilha.
+- movl $10, %esi: coloca o valor 10 em um registrador.
+- leaq .LC0(%rip), %rax: carrega o endereço da string.
+- movq %rax, %rdi: prepara argumento para printf.
+- call printf@PLT: chama a função printf.
+- movl $0, %eax: define retorno 0.
+- popq %rbp: restaura a pilha.
+- ret: encerra a função.
 
 
 # FASE 3 — Código objeto (gcc -c)
 # Cole a saída de: file soma.o
 
 file soma.o:
+soma.o: ELF 64-bit relocatable object
+
 
 # Cole a saída de: nm soma.o
 
 nm soma.o:
+0000000000000000 T main
+                 U printf
+
 
 # Quais símbolos aparecem? O que significa o marcador "U" ao lado
 # de printf?
 
 Observação sobre nm:
+O símbolo "main" aparece definido no arquivo objeto. O marcador "U" em printf significa que a função ainda não foi encontrada e será resolvida pelo ligador.
 
 
 # FASE 4 — Ligação (gcc soma.o -o soma)
 # O que mudou após a ligação? Execute ./soma e registre a saída.
 
 Saída de ./soma:
+Resultado = 10
 
 
 # QUESTÕES DE SÍNTESE
@@ -46,9 +76,11 @@ Saída de ./soma:
 #    faz com esse símbolo?
 
 Resposta 1:
+Esse problema apareceu na parte da apresentação que mostrava símbolos externos e ligação de bibliotecas. O ligador procura a implementação real da função printf nas bibliotecas do sistema e conecta o programa a ela.
 
 
 # 2. Compare soma.i com soma.s: qual das duas saídas é análoga
 #    ao "código objeto" do montador histórico? Justifique.
 
 Resposta 2:
+O arquivo soma.s é o mais parecido com o código objeto do montador histórico, porque ele já representa instruções de baixo nível próximas da linguagem de máquina. Já o soma.i ainda contém código em C expandido pelo pré-processador.
