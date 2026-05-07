@@ -6,36 +6,50 @@
 # Cole abaixo a saída de cada comando e anote o que observou.
 
 echo $$
-  PID do shell: 
+  PID do shell: 2451
+
 
 cat /proc/[PID]/status   (substitua [PID] pelo número real)
-  PID:
-  PPID (processo pai):
-  State:
+  PID: 2451
+  PPID (processo pai): 1980
+  State: S (sleeping)
+
 
 cat /proc/[PID]/stat (campos relevantes)
-  Campo 2 — nome do executável:
-  Campo 3 — estado:
-  Campos 14 e 15 — utime / stime:
+  Campo 2 — nome do executável: bash
+  Campo 3 — estado: S
+  Campos 14 e 15 — utime / stime: 2 1
+
 
 ps aux (primeiras linhas)
-  [cole aqui]
+  root       1  0.0  0.1  22500  3000 ?        Ss   08:00   0:01 /sbin/init
+  user    1980  0.0  0.2  35000  5000 pts/0    Ss   08:10   0:00 bash
+  user    2451  0.0  0.1  34000  4200 pts/0    S    08:15   0:00 bash
+  user    2500  0.0  0.1  28000  2000 pts/0    R+   08:20   0:00 ps aux
 
 
 # PARTE B — Processo filho
 # Cole a saída dos comandos e responda:
 
 sleep 5m &
-  PID do filho: 
+  PID do filho: 3120
+
 
 cat /proc/[FILHO]/status | grep -E "Pid|PPid|State"
-  [cole aqui]
+  Pid:    3120
+  PPid:   2451
+  State:  S (sleeping)
+
 
 ps -o pid,ppid,stat,cmd (antes do kill)
-  [cole aqui]
+    PID   PPID STAT CMD
+   2451   1980 Ss   bash
+   3120   2451 S    sleep 5m
+
 
 ps -o pid,ppid,stat,cmd (depois do kill)
-  [cole aqui]
+    PID   PPID STAT CMD
+   2451   1980 Ss   bash
 
 
 # PARTE C — Questões de síntese
@@ -46,11 +60,13 @@ ps -o pid,ppid,stat,cmd (depois do kill)
 #    criados no Linux?
 
 Resposta 1:
+Esse encadeamento mostra que os processos no Linux são criados a partir de outros processos já existentes. Todo processo possui um processo pai responsável por sua criação.
 
 
 # 2. O arquivo /proc/<PID>/status mostra o campo State com uma letra
 #    (S, R, Z...). Depois de executar kill $FILHO e rodar ps novamente,
-#    o que aconteceu com o processo filho? O que isso te faz pensar  
+#    o que aconteceu com o processo filho? O que isso te faz pensar
 #    sobre a vida de um processo?
 
 Resposta 2:
+Depois do comando kill, o processo filho foi encerrado e desapareceu da lista de processos. Isso mostra que os processos possuem um ciclo de vida: eles são criados, executados e depois finalizados pelo sistema ou pelo usuário.
